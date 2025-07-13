@@ -1,24 +1,25 @@
 Product Catalog API
+
 This project is a REST API for managing a product catalog and its categories. The application is built with Java, using Spring Boot and a MySQL database.
 
 Requirements
-Java 17 or higher
-Maven 3.6 or higher
-MySQL
+      Java 17 or higher
+      Maven 3.6 or higher
+      MySQL
 
 Initial Setup
-Clone the Repository:
+   1. Clone the Repository:
+      
+      git clone https://github.com/your-username/product-catalog-api.git
+      cd product-catalog-api
 
-git clone https://github.com/your-username/product-catalog-api.git
-cd product-catalog-api
+  2 .Set Up the Database:
 
-      2 .Set Up the Database:
-
-Create a database in MySQL called productcatalog.
-Update the connection details in the application.properties file with your MySQL credentials:
-spring.datasource.url=jdbc:mysql://localhost:3306/productcatalog
-spring.datasource.username=your-username
-spring.datasource.password=your-password
+            Create a database in MySQL called productcatalog.
+            Update the connection details in the application.properties file with your MySQL credentials:
+            spring.datasource.url=jdbc:mysql://localhost:3306/productcatalog
+            spring.datasource.username=your-username
+            spring.datasource.password=your-password
     3. Run the Application:
 
    mvn spring-boot:run
