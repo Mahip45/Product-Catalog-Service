@@ -20,6 +20,7 @@ Initial Setup
             spring.datasource.url=jdbc:mysql://localhost:3306/productcatalog
             spring.datasource.username=your-username
             spring.datasource.password=your-password
+            
     3. Run the Application:
 
    mvn spring-boot:run
