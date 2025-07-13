@@ -12,83 +12,56 @@ import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("/api/products")
-public class ProductController {
+@RequestMapping("/api/categories")
+public class CategoryController {
 
-    private final ProductService productService;
+    private final CategoryService categoryService;
 
     @Autowired
-    public ProductController(ProductService productService) {
-        this.productService = productService;
+    public CategoryController(CategoryService categoryService) {
+        this.categoryService = categoryService;
     }
 
     @GetMapping
-    public ResponseEntity<List<Product>> getAllProducts() {
-        List<Product> products = productService.getAllProducts();
-        if (products.isEmpty()) {
+    public ResponseEntity<List<Category>> getAllCategories() {
+        List<Category> categories = categoryService.getAllCategories();
+        if (categories.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(products, HttpStatus.OK);
+        return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
-        Optional<Product> product = productService.getProductById(id);
-        return product.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
+    public ResponseEntity<Category> getCategoryById(@PathVariable Long id) {
+        Optional<Category> category = categoryService.getCategoryById(id);
+        return category.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<List<Product>> searchProductsByName(@RequestParam String name) {
-        List<Product> products = productService.searchProductsByName(name);
-        if (products.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(products, HttpStatus.OK);
-    }
-
-    @GetMapping("/category/{categoryId}")
-    public ResponseEntity<List<Product>> getProductsByCategory(@PathVariable Long categoryId) {
-        List<Product> products = productService.getProductsByCategory(categoryId);
-        if (products.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(products, HttpStatus.OK);
-    }
-
     @PostMapping
-    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
+    public ResponseEntity<Category> createCategory(@RequestBody Category category) {
         try {
-            Product createdProduct = productService.saveProduct(product);
-            return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
+            Category createdCategory = categoryService.createCategory(category);
+            return new ResponseEntity<>(createdCategory, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product productDetails) {
-        Optional<Product> productOptional = productService.getProductById(id);
-
-        if (productOptional.isPresent()) {
-            Product product = productOptional.get();
-            product.setName(productDetails.getName());
-            product.setDescription(productDetails.getDescription());
-            product.setPrice(productDetails.getPrice());
-            product.setStock(productDetails.getStock());
-            product.setCategory(productDetails.getCategory());
-
-            Product updatedProduct = productService.saveProduct(product);
-            return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
-        } else {
+    public ResponseEntity<Category> updateCategory(@PathVariable Long id, @RequestBody Category categoryDetails) {
+        try {
+            Category updatedCategory = categoryService.updateCategory(id, categoryDetails);
+            return new ResponseEntity<>(updatedCategory, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> deleteProduct(@PathVariable Long id) {
+    public ResponseEntity<HttpStatus> deleteCategory(@PathVariable Long id) {
         try {
-            productService.deleteProduct(id);
+            categoryService.deleteCategory(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
