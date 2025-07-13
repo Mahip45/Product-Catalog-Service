@@ -1,4 +1,4 @@
-package com.productcatalog.productcatalog.Controller;
+package com.example.productcatalog.Controller;
 
 import com.productcatalog.productcatalog.Entity.Product;
 import com.productcatalog.productcatalog.Service.ProductService;
